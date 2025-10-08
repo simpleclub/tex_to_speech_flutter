@@ -1,0 +1,13 @@
+[package]
+name = "tex_to_speech_core"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+latex2mathml = "0.2.3"
+thiserror = "2"
+
+[dependencies.mathcat]
+# version = "0.7.2"
+path = "../../MathCAT"
+features = ["include-zip"]
