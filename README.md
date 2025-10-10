@@ -7,3 +7,4 @@ Contains a Flutter plugin for converting LaTeX to speakable text that can be rea
 ### Requirements
  - Flutter SDK version 3.x or higher
  - Rust toolchain installed
+ - flutter_rust_bridge_codegen https://cjycode.com/flutter_rust_bridge/quickstart

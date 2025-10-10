@@ -672,6 +672,7 @@ name = "tex_to_speech_core"
 version = "0.1.0"
 dependencies = [
  "latex2mathml",
+ "log",
  "mathcat",
  "thiserror",
 ]

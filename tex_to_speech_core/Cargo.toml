@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 latex2mathml = "0.2.3"
+log = "0.4.28"
 thiserror = "2"
 
 [dependencies.mathcat]
