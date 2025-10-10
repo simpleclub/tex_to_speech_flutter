@@ -3,3 +3,4 @@ rust_root: rust/
 dart_output: lib/src/rust
 dart_entrypoint_class_name: TexToSpeechFlutterBridge
 dart_format_line_length: 80
+default_external_library_loader_web_prefix: assets/packages/tex_to_speech/pkg/

@@ -2,9 +2,17 @@
 
 Contains a Flutter plugin for converting LaTeX to speakable text that can be read aloud by a text-to-speech engine.
 
-## Build process
-
-### Requirements
+## Requirements
  - Flutter SDK version 3.x or higher
  - Rust toolchain installed
  - flutter_rust_bridge_codegen https://cjycode.com/flutter_rust_bridge/quickstart
+
+## Build process
+`flutter_rust_bridge_codegen generate`
+
+### Web
+`flutter_rust_bridge_codegen build-web -o ../lib`
+
+
+### Troubleshooting
+- If you encounter issue with loading the WASM file try running `cargo update` in `tex_to_speech/rust` project directory.

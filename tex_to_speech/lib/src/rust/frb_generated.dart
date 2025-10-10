@@ -79,7 +79,7 @@ class TexToSpeechFlutterBridge
       ExternalLibraryLoaderConfig(
         stem: 'tex_to_speech',
         ioDirectory: 'rust/target/release/',
-        webPrefix: 'pkg/',
+        webPrefix: 'assets/packages/tex_to_speech/pkg/',
       );
 }
 
