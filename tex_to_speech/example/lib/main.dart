@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tex_to_speech/tex_to_speech.dart';
 
 Future<void> main() async {
-  await TexToSpeechFlutterBridge.init();
+  await TexToSpeechFlutter.init();
   runApp(const MyApp());
 }
 
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Action: Call Rust `tex_to_speech("x = \\frac{ - b \\pm \\sqrt{ b^2 - 4 a c } }{ 2 a }")`\nResult: `${texToSpeech(text: "x = \\frac{ - b \\pm \\sqrt{ b^2 - 4 a c } }{ 2 a }")}`',
+                'Action: Call Rust `tex_to_speech("x = \\frac{ - b \\pm \\sqrt{ b^2 - 4 a c } }{ 2 a }")`\nResult: `${TexToSpeechFlutter.texToSpeech("x = \\frac{ - b \\pm \\sqrt{ b^2 - 4 a c } }{ 2 a }")}`',
               ),
               SizedBox.square(dimension: 16.0),
               Expanded(child: _TexConverterForm()),
@@ -82,7 +82,7 @@ class __TexConverterFormState extends State<_TexConverterForm> {
                   _error = null;
                 });
                 try {
-                  final result = texToSpeech(text: text);
+                  final result = TexToSpeechFlutter.texToSpeech(text);
                   if (!mounted) return;
                   setState(() {
                     _speech = result;
