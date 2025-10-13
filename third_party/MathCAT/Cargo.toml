@@ -51,10 +51,8 @@ android_logger = {version = "0.15.1", optional = true}
 [build-dependencies]
 bitflags = "2.6"
 error-chain = "0.12.4"
-[target.'cfg(target_family = "wasm")'.build-dependencies]
-zip = { version = "5.1", default-features = false, features = ["deflate"] }
-[target.'cfg(not(target_family = "wasm"))'.build-dependencies]
-zip = { version = "5.1", default-features = false, features = ["bzip2"] }
+# Pull both bzip2 and deflate features for zip in build step
+zip = { version = "5.1", default-features = false, features = ["bzip2", "deflate"] }
 
 [lib]
 name = "libmathcat"

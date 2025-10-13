@@ -9,6 +9,5 @@ log = "0.4.28"
 thiserror = "2"
 
 [dependencies.mathcat]
-# version = "0.7.2"
-path = "../../MathCAT"
+path = "../third_party/MathCAT"
 features = ["include-zip"]
