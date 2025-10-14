@@ -14,8 +14,8 @@ popd
 
 flutter pub get
 
-rm -rf lib/pkg
+rm -rf pkg
 flutter_rust_bridge_codegen generate
-flutter_rust_bridge_codegen build-web -o ../lib
-rm lib/pkg/.gitignore
+flutter_rust_bridge_codegen build-web -o ..
+rm pkg/.gitignore
 popd
