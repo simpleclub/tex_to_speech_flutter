@@ -1,0 +1,6 @@
+precompiled_binaries:
+  # Uri prefix used when downloading precompiled binaries.
+  url_prefix: https://github.com/simpleclub-extended/TeX-to-Speech_flutter/releases/download/precompiled_
+
+  # Public key for verifying downloaded precompiled binaries.
+  public_key: e21211ad0e57469e8e0d630938d328f862b9abc7ab119ba04e98c33412d45da4
