@@ -2,6 +2,17 @@
 
 Contains a Flutter plugin for converting LaTeX to speakable text that can be read aloud by a text-to-speech engine.
 
+## Using in Flutter project
+Add the following dependency to your `pubspec.yaml` file:
+```yaml
+dependencies:
+  tex_to_speech:
+    git:
+      url: git@github.com:simpleclub/tex_to_speech_flutter
+      ref: 0.0.1
+      path: tex_to_speech
+```
+
 ## Dependencies
 The plugin depends on `flutter_rust_bridge` project to create a bindings and glue code between Rust implementation and Dart APIs.
 
