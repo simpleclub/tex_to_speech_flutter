@@ -54,8 +54,8 @@ We require contributors to sign our [Contributor License Agreement (CLA)][CLA].
 In order for us to review and merge your code, please follow the link and sign the agreement.
 
 [repo]: https://github.com/simpleclub/tex_to_speech_flutter
-[pubspec]: https://github.com/simpleclub-extended/tex_to_speech_flutter/blob/main/tex_to_speech/pubspec.yaml
-[changelog]: https://github.com/simpleclub-extended/tex_to_speech_flutter/blob/main/tex_to_speech/CHANGELOG.md
+[pubspec]: https://github.com/simpleclub/tex_to_speech_flutter/blob/main/tex_to_speech/pubspec.yaml
+[changelog]: https://github.com/simpleclub/tex_to_speech_flutter/blob/main/tex_to_speech/CHANGELOG.md
 [create pr]: https://help.github.com/en/articles/creating-a-pull-request-from-a-fork
 [GitHub hub]: https://hub.github.com
 [ssh key]: https://help.github.com/articles/generating-ssh-keys
