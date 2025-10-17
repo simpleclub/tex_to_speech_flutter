@@ -1,6 +1,7 @@
 name: tex_to_speech
 description: "A new Flutter FFI plugin project."
 version: 0.0.1
+publish_to: none
 
 environment:
   sdk: ^3.9.2

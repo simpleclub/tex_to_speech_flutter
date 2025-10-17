@@ -12,7 +12,7 @@ The plugin depends on `flutter_rust_bridge` project to create a bindings and glu
 ## Requirements
  - Flutter SDK version 3.x or higher
  - Rust toolchain installed
- - flutter_rust_bridge_codegen https://cjycode.com/flutter_rust_bridge/quickstart
+ - flutter_rust_bridge_codegen [https://cjycode.com/flutter_rust_bridge/quickstart]
 
 ## Build process
 `flutter_rust_bridge_codegen generate`

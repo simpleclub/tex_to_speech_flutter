@@ -46,7 +46,7 @@ git subtree push --prefix third_party/pkg pkg-fork main
 ## Actual commands used:
 
 ```sh
-git remote add MathCAT-origin https://github.com/NSoiffer/MathCAT.git
+git remote add MathCAT-origin https://github.com/simpleclub-extended/MathCAT.git
 git fetch MathCAT-origin
 git subtree add --prefix third_party/MathCAT MathCAT-origin main --squash
 ```

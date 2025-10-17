@@ -1,0 +1,12 @@
+# Matches the root and tex_to_speech package, however, this does *not*
+# match the tex_to_speech package itself. The tex_to_speech directory is
+# overridden below, which is also why the single asterisk has to come first
+# (as later matches take precedence).
+# Therefore, the owners here are responsible for the repo README, GitHub
+# Actions workflows, etc.
+*                     @ukasz123
+
+# Matches the whole tex_to_speech package, i.e. relating to all code and
+# setup of the main package.
+tex_to_speech/        @ukasz123
+tex_to_speech_core/        @ukasz123
