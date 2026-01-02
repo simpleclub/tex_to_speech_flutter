@@ -1,11 +1,26 @@
+use std::io::{self, Read};
+
 use tex_to_speech_core::*;
 
 fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
-    println!("Hello, TeXToSpeech!");
-    let tex = r"x = \frac{ - b \pm \sqrt{ b^2 - 4 a c } }{ 2 a }";
-    println!("TeX: {}", tex);
+    env_logger::init();
     let tts = TexToSpeechBuilder::new().with_language("de").build()?;
-    let output = tts.tex_to_speech(tex)?;
+
+    let path = std::env::args().nth(1);
+    let input = match path {
+        Some(path) => {
+            let v = std::fs::read_to_string(path)?;
+            v
+        }
+        None => {
+            let mut stdin = io::stdin();
+            let mut buf = String::new();
+            let _ = stdin.read_to_string(&mut buf)?;
+
+            buf
+        }
+    };
+    let output = tts.tex_to_speech(&input)?;
     println!("TeX spoken: {output:?}");
 
     Ok(())

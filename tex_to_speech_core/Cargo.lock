@@ -671,6 +671,7 @@ dependencies = [
 name = "tex_to_speech_core"
 version = "0.1.0"
 dependencies = [
+ "env_logger",
  "latex2mathml",
  "log",
  "mathcat",
