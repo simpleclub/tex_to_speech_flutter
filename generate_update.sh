@@ -16,6 +16,6 @@ flutter pub get
 
 rm -rf pkg
 flutter_rust_bridge_codegen generate
-flutter_rust_bridge_codegen build-web -o ..
+flutter_rust_bridge_codegen build-web --release -o ..
 rm pkg/.gitignore
 popd

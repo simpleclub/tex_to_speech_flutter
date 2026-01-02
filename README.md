@@ -29,7 +29,7 @@ The plugin depends on `flutter_rust_bridge` project to create a bindings and glu
 `flutter_rust_bridge_codegen generate`
 
 ### Web
-`flutter_rust_bridge_codegen build-web -o ..`
+`flutter_rust_bridge_codegen build-web --release -o ..`
 
 ### Troubleshooting
 - If you encounter issue with loading the WASM file try running `cargo update` in `tex_to_speech/rust` project directory.
