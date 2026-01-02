@@ -1118,14 +1118,13 @@ dependencies = [
 name = "tex_to_speech"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "flutter_rust_bridge",
  "tex_to_speech_core",
 ]
 
 [[package]]
 name = "tex_to_speech_core"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "latex2mathml",
  "log",

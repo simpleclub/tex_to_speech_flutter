@@ -7,7 +7,6 @@ edition = "2021"
 crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
-anyhow = "1.0.100"
 flutter_rust_bridge = "=2.11.1"
 tex_to_speech_core = { path = "../../tex_to_speech_core" }
 

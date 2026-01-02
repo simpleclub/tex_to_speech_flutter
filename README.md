@@ -9,7 +9,7 @@ dependencies:
   tex_to_speech:
     git:
       url: git@github.com:simpleclub/tex_to_speech_flutter
-      ref: 0.0.1
+      ref: 0.0.2
       path: tex_to_speech
 ```
 

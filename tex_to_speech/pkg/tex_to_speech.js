@@ -215,16 +215,6 @@ let wasm_bindgen;
         return real;
     }
     /**
-     * @param {number} call_id
-     * @param {any} ptr_
-     * @param {number} rust_vec_len_
-     * @param {number} data_len_
-     */
-    __exports.frb_dart_fn_deliver_output = function(call_id, ptr_, rust_vec_len_, data_len_) {
-        wasm.frb_dart_fn_deliver_output(call_id, ptr_, rust_vec_len_, data_len_);
-    };
-
-    /**
      * @param {number} func_id
      * @param {any} port_
      * @param {any} ptr_
@@ -253,6 +243,16 @@ let wasm_bindgen;
     __exports.frb_get_rust_content_hash = function() {
         const ret = wasm.frb_get_rust_content_hash();
         return ret;
+    };
+
+    /**
+     * @param {number} call_id
+     * @param {any} ptr_
+     * @param {number} rust_vec_len_
+     * @param {number} data_len_
+     */
+    __exports.frb_dart_fn_deliver_output = function(call_id, ptr_, rust_vec_len_, data_len_) {
+        wasm.frb_dart_fn_deliver_output(call_id, ptr_, rust_vec_len_, data_len_);
     };
 
     /**
@@ -321,7 +321,7 @@ let wasm_bindgen;
         }
     };
 
-    function __wbg_adapter_6(arg0, arg1, arg2) {
+    function __wbg_adapter_10(arg0, arg1, arg2) {
         wasm.closure1392_externref_shim(arg0, arg1, arg2);
     }
 
@@ -667,7 +667,7 @@ let wasm_bindgen;
         };
         imports.wbg.__wbindgen_cast_5c89b0f8a56e8b9a = function(arg0, arg1) {
             // Cast intrinsic for `Closure(Closure { dtor_idx: 1391, function: Function { arguments: [NamedExternref("Event")], shim_idx: 1392, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
-            const ret = makeMutClosure(arg0, arg1, 1391, __wbg_adapter_6);
+            const ret = makeMutClosure(arg0, arg1, 1391, __wbg_adapter_10);
             return ret;
         };
         imports.wbg.__wbindgen_cast_d6cd19b81560fd6e = function(arg0) {
