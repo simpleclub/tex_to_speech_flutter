@@ -4,6 +4,5 @@ pub fn tex_to_speech(text: &str) -> Result<String, String> {
         .with_language("de")
         .build()
         .map_err(|e| e.to_string())?;
-
-    Ok(tts_engine.tex_to_speech(text).map_err(|e| e.to_string())?)
+    tts_engine.tex_to_speech(text).map_err(|e| e.to_string())
 }
