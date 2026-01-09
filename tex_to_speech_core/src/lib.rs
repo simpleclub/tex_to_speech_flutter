@@ -37,7 +37,9 @@ impl TexToSpeech {
     /// Converts a TeX string to speech.
     pub fn tex_to_speech(&self, input: &str) -> Result<String> {
         let mathml = latex2mathml::latex_to_mathml(input, latex2mathml::DisplayStyle::Inline)?;
-        self.mathml_to_speech(&mathml)
+        let mathml = mathml.trim();
+        debug!("MathML: mathml generated: {}", mathml);
+        self.mathml_to_speech(mathml)
     }
 
     /// Converts a MathML string to speech.
