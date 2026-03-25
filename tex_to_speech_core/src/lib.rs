@@ -54,7 +54,8 @@ impl TexToSpeech {
         pulldown_latex::push_mathml(&mut mathml, parser, pulldown_latex::RenderConfig::default())?;
         let mathml = mathml.trim();
         debug!("MathML: mathml generated: {}", mathml);
-        self.mathml_to_speech(mathml)
+        let mathml = mathml.replace("<<", "&lt;<").replace(">>", ">&gt;");
+        self.mathml_to_speech(&mathml)
     }
 
     /// Converts a MathML string to speech.
