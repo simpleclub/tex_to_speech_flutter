@@ -4,7 +4,7 @@ version = "0.1.1"
 edition = "2024"
 
 [dependencies]
-latex2mathml = "0.2.3"
+pulldown-latex="0.7.1"
 log = "0.4.28"
 thiserror = "2"
 env_logger = {version = "0.11.8", optional = true}
@@ -12,6 +12,10 @@ env_logger = {version = "0.11.8", optional = true}
 [dependencies.mathcat]
 path = "../third_party/MathCAT"
 features = ["include-zip"]
+
+[dev-dependencies]
+itertools = "0.14"
+rayon = "1"
 
 [[bin]]
 name = "tex_to_speech_core"
