@@ -42,13 +42,12 @@ pub struct TexToSpeech;
 impl TexToSpeech {
     /// Converts a TeX string to speech.
     pub fn tex_to_speech(&self, input: &str) -> Result<String> {
-        let storage = pulldown_latex::Storage::new();
-        let mut parser = pulldown_latex::Parser::new(input, &storage);
-        if !parser.all(|i| i.is_ok()) {
-            return Err(errors::Error::ParserError(
-                parser.filter(|v| v.is_err()).next().unwrap().err().unwrap(),
-            ));
+        let mut storage = pulldown_latex::Storage::new();
+        let parser = pulldown_latex::Parser::new(input, &storage);
+        if let Some(err) = parser.filter(|v| v.is_err()).next() {
+            return Err(errors::Error::ParserError(err.err().unwrap()));
         }
+        storage.reset();
         let parser = pulldown_latex::Parser::new(input, &storage);
         let mut mathml = String::new();
         pulldown_latex::push_mathml(&mut mathml, parser, pulldown_latex::RenderConfig::default())?;
@@ -137,7 +136,7 @@ mod tests {
                 Ok(value) if value.contains("PARSE ERROR") => {
                     warnings.push(format!("failed to generate speech for `{}`", tex));
                 }
-                Err(_) => {
+                Err(_err) => {
                     warnings.push(format!("failed to convert TeX `{}`", tex));
                 }
                 _ => {}
