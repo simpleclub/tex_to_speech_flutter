@@ -19,9 +19,6 @@ perl -pe 's/\\col\[[0-9]+\]/ /g' ${FILE_NAME}-step1 > ${FILE_NAME}-step2
 # fixing underlines without block
 perl -pe 's/\\underline(\s*)\\/\\/g' ${FILE_NAME}-step2 > ${FILE_NAME}-step3
 
-# replace \dfrac with \frac
-# perl -pe 's/\\dfrac/\frac/g' ${FILE_NAME}-step5 > ${FILE_NAME}-step6
-
 # replace \middle with \mid,
 perl -pe 's/\\middle(\s*)\|/\\mid /g' ${FILE_NAME}-step3 > ${FILE_NAME}-step4
 
@@ -32,13 +29,13 @@ perl -pe 's/\\lt(\S)/\\lt $1/g'  ${FILE_NAME}-step4 | perl -pe 's/\\gt(\S)/\\gt 
 perl -pe 's/\\text(sf|rm)(\s*){([^}]+)}/\\text{$3}/g' ${FILE_NAME}-step5 > ${FILE_NAME}-step6
 
 # expand macros
-perl -pe 's/\\e(\W|_)/\\mathrm{e}$1/g' ${FILE_NAME}-step6 | \
-perl -pe 's/\\i(\W|_)/\\mathrm{i}$1/g' | \
-perl -pe 's/\\d(\W|_)/\\mathrm{d}$1/g' | \
-perl -pe 's/\\C(\W|_)/\\mathbb{C}$1/g' | \
-perl -pe 's/\\Q(\W|_)/\\mathbb{Q}$1/g' | \
-perl -pe 's/\\N(\W|_)/\\mathbb{N}$1/g' | \
-perl -pe 's/\\R(\W|_)/\\mathbb{R}$1/g' | \
+perl -pe 's/\\e([^a-zA-Z])/\\mathrm{e}$1/g' ${FILE_NAME}-step6 | \
+perl -pe 's/\\i([^a-zA-Z])/\\mathrm{i}$1/g' | \
+perl -pe 's/\\d([^a-zA-Z])/\\mathrm{d}$1/g' | \
+perl -pe 's/\\C([^a-zA-Z])/\\mathbb{C}$1/g' | \
+perl -pe 's/\\Q([^a-zA-Z])/\\mathbb{Q}$1/g' | \
+perl -pe 's/\\N([^a-zA-Z])/\\mathbb{N}$1/g' | \
+perl -pe 's/\\R([^a-zA-Z])/\\mathbb{R}$1/g' | \
 perl -pe 's/\\lsg(\s*){(.+)}/\\underline{\\underline{$2}}/g' | \
 perl -pe 's/\\eqhat/\\overset{\\wedge}{=}/g' > ${FILE_NAME}-step7
 
