@@ -1,6 +1,5 @@
 use std::io::{self, BufRead, Write, stdout};
 
-use log::debug;
 use tex_to_speech_core::*;
 
 fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
@@ -8,30 +7,33 @@ fn main() -> std::result::Result<(), Box<dyn std::error::Error>> {
     let tts = TexToSpeechBuilder::new().with_language("de").build()?;
     let stdin = io::stdin();
 
-    let results = stdin
-        .lock()
-        .lines()
-        .filter_map(|line| line.ok())
-        .map(|line| {
-            let r = tts.tex_to_speech(line.trim());
-            (line, r)
-        })
-        .map(|(tex, result)| match result {
-            Ok(speech) => output::ConversionOutcome {
-                tex: tex,
-                result: output::ConversionResult::Success { speech: speech },
-            },
-            Err(e) => output::ConversionOutcome {
-                tex: tex,
-                result: output::ConversionResult::Failure {
-                    error: e.to_string(),
-                },
-            },
-        })
-        .collect::<Vec<_>>();
+    let mut results: Vec<output::ConversionOutcome> = Vec::new();
+    for line in stdin.lock().lines() {
+        match line {
+            Ok(line) => {
+                let r = tts.tex_to_speech(line.trim());
+                let outcome = match r {
+                    Ok(speech) => output::ConversionOutcome {
+                        tex: line,
+                        result: output::ConversionResult::Success { speech: speech },
+                    },
+                    Err(err) => output::ConversionOutcome {
+                        tex: line,
+                        result: output::ConversionResult::Failure {
+                            error: err.to_string(),
+                        },
+                    },
+                };
+                results.push(outcome);
+            }
+            Err(err) => {
+                eprintln!("Failed to read from input: {}", err);
+            }
+        }
+    }
+
     let buf = { ron::ser::to_string_pretty(&results, ron::ser::PrettyConfig::default())? };
     stdout().write_all(buf.as_bytes())?;
-    stdout().write_all("\n".as_bytes())?;
     Ok(())
 }
 

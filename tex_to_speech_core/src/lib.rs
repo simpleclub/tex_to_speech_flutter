@@ -43,8 +43,8 @@ impl TexToSpeech {
     /// Converts a TeX string to speech.
     pub fn tex_to_speech(&self, input: &str) -> Result<String> {
         let mut storage = pulldown_latex::Storage::new();
-        let parser = pulldown_latex::Parser::new(input, &storage);
-        if let Some(err) = parser.filter(|v| v.is_err()).next() {
+        let mut parser = pulldown_latex::Parser::new(input, &storage);
+        if let Some(err) = parser.find(|v| v.is_err()) {
             return Err(errors::Error::ParserError(err.err().unwrap()));
         }
         storage.reset();
