@@ -9,7 +9,7 @@ dependencies:
   tex_to_speech:
     git:
       url: git@github.com:simpleclub/tex_to_speech_flutter
-      ref: 0.0.2
+      ref: 0.0.3
       path: tex_to_speech
 ```
 
@@ -18,7 +18,7 @@ The plugin depends on `flutter_rust_bridge` project to create a bindings and glu
 
 ### Rust crates used
   - [`MathCAT`](https://nsoiffer.github.io/MathCAT/) - a library for producing speech text from MathML. It can also have other features (Braille support, text-to-speech) which are not used.
-  - [`latex2mathml`](https://docs.rs/latex2mathml/latest/latex2mathml/) - a library for converting LaTeX to MathML. It may limit the number of TeX commands that can be correctly converted. See [Supported LaTeX commands](https://docs.rs/latex2mathml/latest/latex2mathml/#supported-latex-commands) for details.
+  - [`pulldown_latex`](https://docs.rs/pulldown-latex/latest/pulldown_latex/index.html) - a library for converting LaTeX to MathML. It may limit the number of TeX commands that can be correctly converted. See [Unsupported Plain-TeX & LaTeX behavior](https://github.com/carloskiki/pulldown-latex/tree/main?tab=readme-ov-file#unsupported-plain-tex--latex-behavior) for details.
 
 ## Requirements
  - Flutter SDK version 3.x or higher
