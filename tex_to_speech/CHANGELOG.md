@@ -1,3 +1,5 @@
+## 0.0.3
+* Conversion improvements.
 
 ## 0.0.2
 
