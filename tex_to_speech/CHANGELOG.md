@@ -1,4 +1,9 @@
+## 0.0.4
+
+* 16KB alignment in Android prebuilt binaries
+
 ## 0.0.3
+
 * Conversion improvements.
 
 ## 0.0.2
