@@ -3,7 +3,9 @@ on:
     branches: [main]
 
 name: Precompile Binaries
-
+env:
+  ANDROID_NDK_VERSION: "28.2.13676358"
+  ANDROID_MIN_SDK_VERSION: "26"
 jobs:
   Precompile:
     runs-on: ${{ matrix.os }}
@@ -28,7 +30,7 @@ jobs:
         if: (matrix.os == 'ubuntu-latest') # Android is built only on linux
         uses: android-actions/setup-android@v3
         with:
-          packages: "tools platform-tools ndk;27.0.12077973"
+          packages: "tools platform-tools ndk;$ANDROID_NDK_VERSION"
       - name: Precompile
         if: (matrix.os == 'macOS-latest') || (matrix.os == 'windows-latest')
         run: dart run build_tool precompile-binaries -v --manifest-dir=../../rust --repository=simpleclub/tex_to_speech_flutter
@@ -38,7 +40,7 @@ jobs:
           PRIVATE_KEY: ${{ secrets.RELEASE_PRIVATE_KEY }}
       - name: Precompile (with Android)
         if: (matrix.os == 'ubuntu-latest')
-        run: dart run build_tool precompile-binaries -v --manifest-dir=../../rust --repository=simpleclub/tex_to_speech_flutter --android-sdk-location=${{env.ANDROID_SDK_ROOT}} --android-ndk-version=27.0.12077973 --android-min-sdk-version=26
+        run: dart run build_tool precompile-binaries -v --manifest-dir=../../rust --repository=simpleclub/tex_to_speech_flutter --android-sdk-location=${{env.ANDROID_SDK_ROOT}} --android-ndk-version=${{ env.ANDROID_NDK_VERSION }} --android-min-sdk-version=${{ env.ANDROID_MIN_SDK_VERSION }}
         working-directory: tex_to_speech/cargokit/build_tool
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
