@@ -30,7 +30,7 @@ jobs:
         if: (matrix.os == 'ubuntu-latest') # Android is built only on linux
         uses: android-actions/setup-android@v3
         with:
-          packages: "tools platform-tools ndk;$ANDROID_NDK_VERSION"
+          packages: "tools platform-tools ndk;${{ env.ANDROID_NDK_VERSION }}"
       - name: Precompile
         if: (matrix.os == 'macOS-latest') || (matrix.os == 'windows-latest')
         run: dart run build_tool precompile-binaries -v --manifest-dir=../../rust --repository=simpleclub/tex_to_speech_flutter
