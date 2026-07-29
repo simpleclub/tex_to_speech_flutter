@@ -16,14 +16,6 @@ labels:
   - 'language:c++'
   - 'language:rust'
   - 'frontend'
-customFields:
-  - name: Backend Code Architecture
-    type: multi_select
-    value:
-      - 294a9fcd-f046-49a3-b661-70a3a243e094 # v2
-  - name: NodeJS Version
-    type: number
-    value: 20
 
 # Learn more about formatting compass.yaml:
 # https://go.atlassian.com/compass-yml-format
