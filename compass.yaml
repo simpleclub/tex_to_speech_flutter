@@ -1,0 +1,21 @@
+name: app - TeX-to-Speech
+id: 'ari:cloud:compass:8072ec69-bd2f-4082-a110-02e57b2c244d:component/ec01753c-527e-446d-905a-af54f87f04a0/1f594f5a-5106-407f-a229-3087291a3169'
+description: >-
+  Adds the ability for making TeX accessible for screen-readers by converting TeX to natural language text.
+configVersion: 1
+typeId: SERVICE
+ownerId: 'ari:cloud:teams::team/9644ecd5-d9ed-4014-afd7-50bdcb843ff2' # Blue Team
+fields:
+  tier: 3
+  lifecycle: Active
+links:
+relationships:
+labels:
+  - 'language:dart'
+  - 'language:javascript'
+  - 'language:c++'
+  - 'language:rust'
+  - 'frontend'
+
+# Learn more about formatting compass.yaml:
+# https://go.atlassian.com/compass-yml-format
