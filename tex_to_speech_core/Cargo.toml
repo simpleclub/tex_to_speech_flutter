@@ -1,6 +1,6 @@
 [package]
 name = "tex_to_speech_core"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2024"
 
 [dependencies]
@@ -13,7 +13,8 @@ itertools = { version ="0.14", optional = true }
 ron = { version = "0.12", optional = true }
 
 [dependencies.mathcat]
-path = "../third_party/MathCAT"
+git = "https://github.com/daisy/MathCAT.git"
+rev = "3608ca9be3b2fe49bebe1030451abd6d436235fc"
 features = ["include-zip"]
 
 [dev-dependencies]

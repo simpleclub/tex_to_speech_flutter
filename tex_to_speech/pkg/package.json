@@ -1,6 +1,6 @@
 {
   "name": "tex_to_speech",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "files": [
     "tex_to_speech_bg.wasm",
     "tex_to_speech.js"
