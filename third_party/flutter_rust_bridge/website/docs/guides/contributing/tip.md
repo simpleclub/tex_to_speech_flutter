@@ -1,0 +1,88 @@
+# Misc Tips
+
+## AI Assistant Skills
+
+For common development workflows, see the skills in `.claude/skills/`.
+
+## Tips for development
+
+### Docker and devcontainer
+
+Optionally, you can use Docker and/or devcontainer to quickly get a standardized development environment. The related code is in `.devcontainer`. For daily use, manual Docker commands, Apple Silicon notes, and publishing the dev Docker image, see `.claude/skills/frb-docker/SKILL.md`.
+
+### The `./frb_internal`
+
+The `./frb_internal whatever-command` (or `./frb_internal.bat`) delegates to the `./tools/frb_internal` dart package.
+It contains all scripts to work on flutter_rust_bridge development.
+It as a similar role as [justfile](https://github.com/casey/just/blob/master/justfile), makefile, etc.
+For example, `./frb_internal precommit --mode fast` (or `--mode slow`) runs code generator, formatter, etc for you.
+
+### CI autofix for generated changes
+
+If generated or normalized files are missing from a pull request, the `Precommit Autofix` bot comment explains how to apply its patch artifact locally.
+For fork pull requests, a follow-up trusted workflow posts the comment after the patch workflow completes, as the latter runs with read-only permissions.
+
+### Temporarily narrow CI while iterating
+
+When a PR needs several quick CI iterations, it is fine to temporarily make unrelated jobs not trigger, for example by adding an always-false `if` guard or otherwise narrowing the workflow to the jobs you are actively debugging.
+Keep this as a separate temporary commit whenever possible, and revert it before the PR is ready for review or merge.
+The final PR should run the normal CI surface again, so reviewers can trust that the broad matrix was not accidentally bypassed.
+
+### The `just codegen`
+
+To run the `flutter_rust_bridge_codegen`, but using the local code (instead of a released version),
+please replace it with `just codegen`.
+
+## Draw a flamegraph for performance
+
+If you are not working on improving performance, please ignore this subsection.
+
+I have made some small scripts for me to get flamegraph on MacOS.
+The scripts contain absolute paths, extra pieces for MacOS to work, etc.
+So you can look at the source code and modify to suit your needs.
+
+To execute it:
+
+```shell
+./frb_internal bench-flamegraph-compile
+./frb_internal bench-flamegraph-run --filter 'VoidFunction.*FrbCstSse.*false' --loop-count 10000000
+```
+
+## Debug in Safari (or other browsers)
+
+Given [this Flutter issue](https://github.com/flutter/flutter/issues/55323),
+it seems that we cannot use things similar to `flutter run -d chrome` for Safari.
+Here is a brief command to achieve similar results.
+
+Note that we need `--profile` to get stack traces.
+
+```shell
+(cd frb_example/flutter_via_create && just codegen build-web && flutter build web --profile)
+(cd frb_utils && dart run flutter_rust_bridge_utils serve-web --web-root ../frb_example/flutter_via_create/build/web)
+```
+
+For the native-assets backend, replace `frb_example/flutter_via_create` with `frb_example/flutter_via_create_native_assets`.
+
+## Print missing stack traces
+
+This script quickly print out every uncaught exception with stack traces.
+For example, when working on Safari, the stack traces are missing without this.
+
+```dart
+Future<void> main() async {
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    print('FlutterError.onError $details');
+  };
+  PlatformDispatcher.instance.onError = (error, stack) {
+    print('PlatformDispatcher.instance.onError $error $stack');
+    return true;
+  };
+  await runZonedGuarded(
+    () async {
+      YOUR_ORIGINAL_CODE_HERE;
+    },
+    (error, stackTrace) => print('runZonedGuarded error $error $stackTrace'),
+  );
+}
+```

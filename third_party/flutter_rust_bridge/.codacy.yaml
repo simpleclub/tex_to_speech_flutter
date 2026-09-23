@@ -1,0 +1,9 @@
+exclude_paths:
+  - "frb_dart/README.md"
+  - "frb_dart/CHANGELOG.md"
+  - "frb_hooks/CHANGELOG.md"
+  - "tools/vmware_windows/**"
+  - "website/**"
+  - "**/cargokit/**"
+  - "frb_example/*_native_assets/**"
+  - "tools/frb_internal/assets/apple_scaffold/frb_example/*_native_assets/**"
