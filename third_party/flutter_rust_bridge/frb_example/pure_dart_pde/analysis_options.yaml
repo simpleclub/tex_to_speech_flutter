@@ -1,0 +1,9 @@
+analyzer:
+  errors:
+    experimental_member_use: ignore
+  exclude:
+    - rust/target/**.dart # contains dumped debug info, instead of normal code
+
+linter:
+  rules:
+    - unawaited_futures

@@ -24,6 +24,7 @@ The plugin depends on `flutter_rust_bridge` project to create a bindings and glu
  - Flutter SDK version 3.x or higher
  - Rust toolchain installed
  - flutter_rust_bridge_codegen [https://cjycode.com/flutter_rust_bridge/quickstart]
+   - **important note:** Due to problem with generated JS files using `eval()` that is forbidden by strict CSP rules we use forked implementation of `flutter_rust_bridge` to apply some workarounds, this requires also that `flutter_rust_bridge_codegen` version _2.13.0_ is used to comply with the fork.
 
 ## Build process
 `flutter_rust_bridge_codegen generate`

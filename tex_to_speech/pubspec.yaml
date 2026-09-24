@@ -1,6 +1,6 @@
 name: tex_to_speech
 description: "A new Flutter FFI plugin project."
-version: 0.0.5
+version: 0.0.6
 publish_to: none
 
 environment:
@@ -10,7 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_rust_bridge: 2.12.0
+  flutter_rust_bridge: 
+    # 2.13.0
+    path: ../third_party/flutter_rust_bridge/frb_dart
   plugin_platform_interface: ^2.0.2
 
 dev_dependencies:

@@ -1,0 +1,8 @@
+analyzer:
+  exclude:
+    - rust/target/**.dart # contains dumped debug info, instead of normal code
+    - rust_builder/cargokit/**
+
+linter:
+  rules:
+    - unawaited_futures

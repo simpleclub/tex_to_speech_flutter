@@ -1,0 +1,51 @@
+name: Precommit Autofix
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+  workflow_dispatch: { }
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  precommit_autofix:
+    name: Generate precommit autofix patch
+    runs-on: ubuntu-latest
+    # This job checks out and executes pull request code, including code from
+    # external forks. Keep it read-only; PR comments are written by the trusted
+    # workflow_run follow-up in precommit_autofix_comment.yaml.
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: 3.11.0
+          architecture: x64
+
+      - name: Run precommit autofix via frb_internal
+        id: autofix
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ./frb_internal precommit-autofix-in-dev-container --mode slow --build-if-missing
+
+      - name: Upload patch artifact
+        if: ${{ steps.autofix.outputs.has_patch == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: precommit-autofix-diff
+          path: precommit-autofix.diff
