@@ -171,7 +171,7 @@ Future<void> _executeWasmPack(
     [
       'build',
       '-t',
-      'no-modules',
+      'web',
       '-d',
       args.outputWasm,
       '--no-typescript',
