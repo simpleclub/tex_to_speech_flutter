@@ -10,7 +10,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_rust_bridge: 2.12.0
+  flutter_rust_bridge:
+    git:
+      url: "https://github.com/simpleclub-extended/flutter_rust_bridge.git"
+      ref: "chore/priv-release"
+      path: "frb_dart"
   plugin_platform_interface: ^2.0.2
 
 dev_dependencies:

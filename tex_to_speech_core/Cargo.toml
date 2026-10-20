@@ -13,8 +13,8 @@ itertools = { version ="0.14", optional = true }
 ron = { version = "0.12", optional = true }
 
 [dependencies.mathcat]
-git = "https://github.com/daisy/MathCAT.git"
-rev = "3608ca9be3b2fe49bebe1030451abd6d436235fc"
+git = "https://github.com/simpleclub-extended/MathCAT.git"
+rev = "2c8c52cb9e4d6585d386abbbc5d702330a784f92"
 features = ["include-zip"]
 
 [dev-dependencies]
