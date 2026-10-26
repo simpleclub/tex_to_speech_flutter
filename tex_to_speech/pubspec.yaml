@@ -11,9 +11,10 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_rust_bridge:
+    # TODO: switch to main project when https://github.com/fzyzcjy/flutter_rust_bridge/issues/3477 is shipped
     git:
       url: "https://github.com/simpleclub-extended/flutter_rust_bridge.git"
-      ref: "chore/priv-release"
+      ref: "98473805b0c324dc9868e10be3dadf7fad660662"
       path: "frb_dart"
   plugin_platform_interface: ^2.0.2
 

@@ -7,7 +7,8 @@ edition = "2021"
 crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
-flutter_rust_bridge = { git = "https://github.com/simpleclub-extended/flutter_rust_bridge.git", branch = "chore/priv-release"}
+# TODO: switch to main project when https://github.com/fzyzcjy/flutter_rust_bridge/issues/3477 is shipped
+flutter_rust_bridge = { git = "https://github.com/simpleclub-extended/flutter_rust_bridge.git", rev = "98473805b0c324dc9868e10be3dadf7fad660662"}
 tex_to_speech_core = { path = "../../tex_to_speech_core" }
 
 [lints.rust]
