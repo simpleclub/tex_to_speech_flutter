@@ -1,3 +1,6 @@
+## UPCOMING RELEASE
+* Update the core Rust lockfile to use `zip` 9.0.5, fixing GHSA-m665-v7pm-7grj.
+
 ## 0.0.6
 * Strict CSP policy support
   * `flutter_rust_bridge` update (*2.14.0-priv.1* - custom fork of *2.14.0-beta.2*)
