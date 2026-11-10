@@ -1,4 +1,5 @@
-## UPCOMING RELEASE
+## 0.0.7
+* Gradle 9 support: Cargokit runs its build tool through injected `ExecOperations` instead of the removed `Project.exec`.
 * Update the core Rust lockfile to use `zip` 9.0.5, fixing GHSA-m665-v7pm-7grj.
 
 ## 0.0.6
