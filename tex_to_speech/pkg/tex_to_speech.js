@@ -416,13 +416,13 @@ let wasm_bindgen = (function(exports) {
                 return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
             },
             __wbindgen_generic_0000000000000001: function(arg0, arg1) {
-                // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [NamedExternref("Event")], shim_idx: 1608, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
-                const ret = makeMutClosure(arg0, arg1, wasm_bindgen_4d46c82131e295d5___convert__closures_____invoke___web_sys_5609fd49eabf8c71___features__gen_MessageEvent__MessageEvent______true_);
+                // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [NamedExternref("Event")], shim_idx: 1577, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
+                const ret = makeMutClosure(arg0, arg1, wasm_bindgen_c42d40002d4ff628___convert__closures_____invoke___web_sys_d229dd1550efcb10___features__gen_MessageEvent__MessageEvent______true_);
                 return ret;
             },
             __wbindgen_generic_0000000000000002: function(arg0, arg1) {
-                // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [], shim_idx: 1610, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
-                const ret = makeMutClosure(arg0, arg1, wasm_bindgen_4d46c82131e295d5___convert__closures_____invoke_______true_);
+                // Cast intrinsic for `Closure(Closure { owned: true, function: Function { arguments: [], shim_idx: 1579, ret: Unit, inner_ret: Some(Unit) }, mutable: true }) -> Externref`.
+                const ret = makeMutClosure(arg0, arg1, wasm_bindgen_c42d40002d4ff628___convert__closures_____invoke_______true_);
                 return ret;
             },
             __wbindgen_generic_0000000000000003: function(arg0) {
@@ -452,12 +452,12 @@ let wasm_bindgen = (function(exports) {
         };
     }
 
-    function wasm_bindgen_4d46c82131e295d5___convert__closures_____invoke_______true_(arg0, arg1) {
-        wasm.wasm_bindgen_4d46c82131e295d5___convert__closures_____invoke_______true_(arg0, arg1);
+    function wasm_bindgen_c42d40002d4ff628___convert__closures_____invoke_______true_(arg0, arg1) {
+        wasm.wasm_bindgen_c42d40002d4ff628___convert__closures_____invoke_______true_(arg0, arg1);
     }
 
-    function wasm_bindgen_4d46c82131e295d5___convert__closures_____invoke___web_sys_5609fd49eabf8c71___features__gen_MessageEvent__MessageEvent______true_(arg0, arg1, arg2) {
-        wasm.wasm_bindgen_4d46c82131e295d5___convert__closures_____invoke___web_sys_5609fd49eabf8c71___features__gen_MessageEvent__MessageEvent______true_(arg0, arg1, arg2);
+    function wasm_bindgen_c42d40002d4ff628___convert__closures_____invoke___web_sys_d229dd1550efcb10___features__gen_MessageEvent__MessageEvent______true_(arg0, arg1, arg2) {
+        wasm.wasm_bindgen_c42d40002d4ff628___convert__closures_____invoke___web_sys_d229dd1550efcb10___features__gen_MessageEvent__MessageEvent______true_(arg0, arg1, arg2);
     }
 
     const WorkerPoolFinalization = (typeof FinalizationRegistry === 'undefined')
@@ -786,7 +786,10 @@ let wasm_bindgen = (function(exports) {
 // This snippet dispatches the 'wasm_bindgen_registered' event after the wasm_bindgen object is available.
 // It's used to notify any listeners that the wasm_bindgen object is now available.
 // Used in WASM bridge initialization to signal that the wasm_bindgen object is ready and can be used to start interacting with the WASM module.
+// Web workers also `importScripts` this file but have no `window`, so the event is only dispatched on the main thread.
 
-let wasmBindgenRegisteredEvent = new Event('wasm_bindgen_registered');
-wasmBindgenRegisteredEvent.wasm_bindgen = wasm_bindgen;
-window.dispatchEvent(wasmBindgenRegisteredEvent);
+if (typeof window !== 'undefined') {
+  const wasmBindgenRegisteredEvent = new Event('wasm_bindgen_registered');
+  wasmBindgenRegisteredEvent.wasm_bindgen = wasm_bindgen;
+  window.dispatchEvent(wasmBindgenRegisteredEvent);
+}
