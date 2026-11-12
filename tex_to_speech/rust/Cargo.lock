@@ -457,7 +457,7 @@ dependencies = [
 [[package]]
 name = "flutter_rust_bridge"
 version = "2.14.0-priv.1"
-source = "git+https://github.com/simpleclub-extended/flutter_rust_bridge.git?branch=chore%2Fpriv-release#867b9162141fca0c20e3f0683251cc9ab03dd50b"
+source = "git+https://github.com/simpleclub-extended/flutter_rust_bridge.git?rev=98473805b0c324dc9868e10be3dadf7fad660662#98473805b0c324dc9868e10be3dadf7fad660662"
 dependencies = [
  "allo-isolate",
  "android_logger",
@@ -485,7 +485,7 @@ dependencies = [
 [[package]]
 name = "flutter_rust_bridge_macros"
 version = "2.14.0-priv.1"
-source = "git+https://github.com/simpleclub-extended/flutter_rust_bridge.git?branch=chore%2Fpriv-release#867b9162141fca0c20e3f0683251cc9ab03dd50b"
+source = "git+https://github.com/simpleclub-extended/flutter_rust_bridge.git?rev=98473805b0c324dc9868e10be3dadf7fad660662#98473805b0c324dc9868e10be3dadf7fad660662"
 dependencies = [
  "hex",
  "md-5",
@@ -1236,7 +1236,7 @@ dependencies = [
 
 [[package]]
 name = "tex_to_speech_core"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "log",
  "mathcat",
@@ -1275,9 +1275,9 @@ dependencies = [
 
 [[package]]
 name = "tokio"
-version = "1.54.0"
+version = "1.54.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a0c168a474b95bfecfe908a65d4bdffc523144b649a74c09c286afb35d53e0bc"
+checksum = "b52fd3255258d26fac7264ab5a76b53c13367136dc011d3d6ad4f8ed070396a3"
 dependencies = [
  "pin-project-lite",
 ]

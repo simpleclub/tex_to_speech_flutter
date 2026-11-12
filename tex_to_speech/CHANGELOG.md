@@ -1,3 +1,6 @@
+## UPCOMING RELEASE
+* Update Tokio to 1.54.1 and rebuild the web binary.
+
 ## 0.0.7
 * Gradle 9 support: Cargokit runs its build tool through injected `ExecOperations` instead of the removed `Project.exec`.
 * Update the core Rust lockfile to use `zip` 9.0.5, fixing GHSA-m665-v7pm-7grj.
