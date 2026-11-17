@@ -1,0 +1,67 @@
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+name: Swift Package xcframework
+jobs:
+  xcframework:
+    runs-on: macos-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ZIP: build/xcframework/tex_to_speech.xcframework.zip
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resolve release tag
+        id: tag
+        run: |
+          tag="$(./build_xcframework.sh --tag)"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          if grep -q "/download/$tag/" tex_to_speech/ios/tex_to_speech/Package.swift; then
+            echo "Package.swift already references $tag."
+            echo "up_to_date=true" >> "$GITHUB_OUTPUT"
+          elif gh release view "$tag" > /dev/null 2>&1; then
+            echo "Release $tag exists, reusing its asset."
+            echo "released=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        if: steps.tag.outputs.up_to_date != 'true' && steps.tag.outputs.released != 'true'
+        with:
+          target: aarch64-apple-ios,aarch64-apple-ios-sim,x86_64-apple-ios,aarch64-apple-darwin,x86_64-apple-darwin
+          rustflags: ""
+      - name: Build and publish xcframework
+        if: steps.tag.outputs.up_to_date != 'true' && steps.tag.outputs.released != 'true'
+        env:
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: |
+          ./build_xcframework.sh
+          gh release create "$TAG" "$ZIP" \
+            --target "$GITHUB_SHA" \
+            --title "Swift package xcframework ${TAG#xcframework_}" \
+            --notes "tex_to_speech.xcframework for Swift Package Manager, built from $GITHUB_SHA."
+      - name: Download published xcframework
+        if: steps.tag.outputs.released == 'true'
+        env:
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: gh release download "$TAG" --pattern tex_to_speech.xcframework.zip --dir "$(dirname "$ZIP")"
+      - name: Open pull request
+        if: steps.tag.outputs.up_to_date != 'true'
+        env:
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: |
+          checksum="$(swift package compute-checksum "$ZIP")"
+          ./update_swift_package.sh "$TAG" "$checksum"
+          branch="chore/swift-package-$TAG"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git commit -am "chore: point Swift packages at $TAG"
+          git push --force origin "$branch"
+          if [[ -z "$(gh pr list --head "$branch" --state open --json number --jq '.[]')" ]]; then
+            gh pr create --base main --head "$branch" \
+              --title "chore: point Swift packages at $TAG" \
+              --body "Updates the iOS and macOS \`Package.swift\` to the xcframework built for \`$TAG\` (checksum \`$checksum\`)."
+          fi
