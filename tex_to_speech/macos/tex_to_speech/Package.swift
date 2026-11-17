@@ -15,8 +15,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "tex_to_speech",
-            url: "https://github.com/simpleclub/tex_to_speech_flutter/releases/download/RELEASE_TAG/tex_to_speech.xcframework.zip",
-            checksum: "CHECKSUM"
+            url: "https://github.com/simpleclub/tex_to_speech_flutter/releases/download/xcframework_c149097340b81c8c/tex_to_speech.xcframework.zip",
+            checksum: "cba51b9a4b4af4cf523b2ffab8991ca5159643006a95cffef9ddafe62496c812"
         ),
     ]
 )
