@@ -1,5 +1,6 @@
 ## UPCOMING RELEASE
 * Update Tokio to 1.54.1 and rebuild the web binary.
+* Swift Package Manager support for iOS and macOS through a prebuilt `tex_to_speech.xcframework`. CocoaPods keeps building through Cargokit.
 
 ## 0.0.7
 * Gradle 9 support: Cargokit runs its build tool through injected `ExecOperations` instead of the removed `Project.exec`.
