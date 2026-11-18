@@ -105,6 +105,8 @@ class PrecompileBinaries {
         target: target,
         libraryName: crateInfo.packageName,
         remote: true,
+        // The build hook bundles dynamic libraries on every platform.
+        aritifactType: AritifactType.dylib,
       );
 
       if (artifactNames.every((name) {

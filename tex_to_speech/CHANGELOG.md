@@ -1,5 +1,6 @@
 ## UPCOMING RELEASE
 * Update Tokio to 1.54.1 and rebuild the web binary.
+* Build the native library with a build hook instead of Cargokit's platform integrations, which adds Swift Package Manager support. Builds from source when Rust is installed, otherwise uses the precompiled binaries. Requires Flutter 3.38 or higher.
 
 ## 0.0.7
 * Gradle 9 support: Cargokit runs its build tool through injected `ExecOperations` instead of the removed `Project.exec`.

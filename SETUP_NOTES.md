@@ -1,6 +1,6 @@
 # Setup Notes
 
-Here you can find notes about changes to the initial project scaffold to make it working as proper Flutter plugin.
+Here you can find notes about changes to the initial project scaffold to make it working as proper Flutter package.
 
 ## Including MathCAT config
 Due to MathCAT configuration approach that is based on YAML files in external directory it is not easy to configure it programmatically. Therefore, `include-zip` feature of MathCAT crate was chosen to include MathCAT configuration files in the plugin package (basically as binary source code).
@@ -11,8 +11,13 @@ Because building for WASM requires special command to be called before Flutter a
 To prepare WASM developer has to run `generate_update.sh` script to generate WASM package and then add it to the commit. The WASM binary and glue code are included in `tex_to_speech/pkg` and are published as assets of `tex_to_speech` plugin.
 Because Flutter assets are accessible under special paths `assets/packages/<plugin_name>/` it was also necessary to update configuration of `flutter_rust_bridge_codegen` (see https://cjycode.com/flutter_rust_bridge/guides/custom/codegen/full-list for list of options) to set `default_external_library_loader_web_prefix` option to `assets/packages/tex_to_speech/pkg/`. This way the WASM binary can be correctly loaded by Flutter Web application.
 
+## Native build hook
+Native platforms build the Rust library through a build hook (`tex_to_speech/hook/build.dart`) instead of Cargokit's CocoaPods, Gradle and CMake integration, so the package works with Swift Package Manager and CocoaPods alike. The hook mirrors Cargokit's default behavior: it builds from source with `flutter_rust_bridge_hooks` when rustup is installed, and otherwise downloads the signed precompiled binary for the crate hash. `hook/src/crate_hash.dart` must stay identical to `CrateHash` in `cargokit/build_tool`, which names the releases.
+
+Build hooks only bundle dynamic libraries, so the precompile workflow publishes `.dylib` files for Apple targets as well.
+
 ## Continous Integration
-1. The GitHub Action workflow was created following instructions from [this guide for cargokit](https://github.com/irondash/cargokit/blob/main/docs/precompiled_binaries.md). Please, note the cargokit source code is part of the repository - it was included by `flutter_rust_bridge_codegen create` command.
+1. The GitHub Action workflow was created following instructions from [this guide for cargokit](https://github.com/irondash/cargokit/blob/main/docs/precompiled_binaries.md). Only Cargokit's `build_tool` remains in the repository, used by this workflow to precompile, sign and publish the binaries.
 2. Windows was excluded from the workflow because we don't support Windows desktop applications yet.
 3. Building for Android wasn't working correctly due to missing Android SDK and NDK not being installed by the example workflow from the guide. Adding step to install Android SDK and NDK solved the issue.
 4. Step to install Rust toolchain was added in case it won't be installed automatically by `cargokit` command.
