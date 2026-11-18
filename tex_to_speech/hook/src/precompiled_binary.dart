@@ -22,7 +22,7 @@ final class PrecompiledBinary {
   static const _assetName = 'src/rust/frb_generated.io.dart';
   static const _downloadAttempts = 5;
   static const _connectionTimeout = Duration(seconds: 30);
-  static const _responseTimeout = Duration(minutes: 5);
+  static const _requestTimeout = Duration(minutes: 5);
 
   /// Downloads and verifies the binary, unless already cached, and adds it to
   /// [output] as a bundled code asset.
@@ -105,37 +105,39 @@ final class PrecompiledBinary {
 
   /// The body of [url], or `null` when it doesn't exist.
   static Future<Uint8List?> _get(Uri url) async {
-    final client = HttpClient()
-      ..findProxy = HttpClient.findProxyFromEnvironment
-      ..connectionTimeout = _connectionTimeout;
-    try {
-      for (var attempt = 1; ; attempt++) {
-        try {
-          final response = await (await client.getUrl(url)).close();
-          if (response.statusCode == HttpStatus.notFound) {
-            await response.drain<void>();
-            return null;
-          }
-          if (response.statusCode != HttpStatus.ok) {
-            await response.drain<void>();
-            throw HttpException('HTTP ${response.statusCode}', uri: url);
-          }
-          final body = BytesBuilder(copy: false);
-          await response.forEach(body.add).timeout(_responseTimeout);
-          return body.takeBytes();
-        } on Exception catch (error) {
-          if (error is! IOException && error is! TimeoutException) {
-            rethrow;
-          }
-          if (attempt == _downloadAttempts) {
-            rethrow;
-          }
-          await Future<void>.delayed(Duration(seconds: attempt));
+    for (var attempt = 1; ; attempt++) {
+      // A fresh client per attempt, force-closed afterwards, so a timed-out
+      // request can't keep its connection open into the next attempt.
+      final client = HttpClient()
+        ..findProxy = HttpClient.findProxyFromEnvironment
+        ..connectionTimeout = _connectionTimeout;
+      try {
+        return await _fetch(client, url).timeout(_requestTimeout);
+      } on Exception catch (error) {
+        final isRetryable = error is IOException || error is TimeoutException;
+        if (!isRetryable || attempt == _downloadAttempts) {
+          rethrow;
         }
+        await Future<void>.delayed(Duration(seconds: attempt));
+      } finally {
+        client.close(force: true);
       }
-    } finally {
-      client.close(force: true);
     }
+  }
+
+  static Future<Uint8List?> _fetch(HttpClient client, Uri url) async {
+    final response = await (await client.getUrl(url)).close();
+    if (response.statusCode == HttpStatus.notFound) {
+      await response.drain<void>();
+      return null;
+    }
+    if (response.statusCode != HttpStatus.ok) {
+      await response.drain<void>();
+      throw HttpException('HTTP ${response.statusCode}', uri: url);
+    }
+    final body = BytesBuilder(copy: false);
+    await response.forEach(body.add);
+    return body.takeBytes();
   }
 
   static String _targetTriple(CodeConfig codeConfig) {
