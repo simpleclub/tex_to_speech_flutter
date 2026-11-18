@@ -26,7 +26,7 @@ The Rust library is built by a [build hook](https://docs.flutter.dev/platform-in
 - **Rust installed** (`rustup` on the `PATH` or in `~/.cargo/bin`): the hook builds the crate from source with the toolchain pinned in `tex_to_speech/rust/rust-toolchain.toml`, which rustup installs on first use.
 - **Rust not installed**: the hook downloads the precompiled binary for the current crate hash from the `precompiled_<hash>` release and verifies its signature. The `Precompile Binaries` workflow publishes these releases on every push to `main`. Precompiled binaries exist for Android, iOS, macOS and Linux x64.
 
-To force either behavior, set the user define in the app's `pubspec.yaml`:
+To force either behavior, set the user define in the app's `pubspec.yaml`, or in the workspace root `pubspec.yaml` for a pub workspace (Flutter reads user defines only from there):
 ```yaml
 hooks:
   user_defines:

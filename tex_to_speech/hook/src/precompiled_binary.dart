@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -20,6 +21,8 @@ final class PrecompiledBinary {
   static const _libraryName = 'tex_to_speech';
   static const _assetName = 'src/rust/frb_generated.io.dart';
   static const _downloadAttempts = 5;
+  static const _connectionTimeout = Duration(seconds: 30);
+  static const _responseTimeout = Duration(minutes: 5);
 
   /// Downloads and verifies the binary, unless already cached, and adds it to
   /// [output] as a bundled code asset.
@@ -92,16 +95,19 @@ final class PrecompiledBinary {
     }
 
     // Written under a temporary name first, so an interrupted build never
-    // leaves a partial binary that later builds would treat as cached.
+    // leaves a partial binary that later builds would treat as cached. The name
+    // is unique per process because concurrent builds share this cache.
     destination.parent.createSync(recursive: true);
-    final partial = File('${destination.path}.partial')..writeAsBytesSync(data);
+    final partial = File('${destination.path}.$pid.partial')
+      ..writeAsBytesSync(data);
     partial.renameSync(destination.path);
   }
 
   /// The body of [url], or `null` when it doesn't exist.
   static Future<Uint8List?> _get(Uri url) async {
     final client = HttpClient()
-      ..findProxy = HttpClient.findProxyFromEnvironment;
+      ..findProxy = HttpClient.findProxyFromEnvironment
+      ..connectionTimeout = _connectionTimeout;
     try {
       for (var attempt = 1; ; attempt++) {
         try {
@@ -115,9 +121,12 @@ final class PrecompiledBinary {
             throw HttpException('HTTP ${response.statusCode}', uri: url);
           }
           final body = BytesBuilder(copy: false);
-          await response.forEach(body.add);
+          await response.forEach(body.add).timeout(_responseTimeout);
           return body.takeBytes();
-        } on IOException {
+        } on Exception catch (error) {
+          if (error is! IOException && error is! TimeoutException) {
+            rethrow;
+          }
           if (attempt == _downloadAttempts) {
             rethrow;
           }
@@ -125,7 +134,7 @@ final class PrecompiledBinary {
         }
       }
     } finally {
-      client.close();
+      client.close(force: true);
     }
   }
 
@@ -133,6 +142,7 @@ final class PrecompiledBinary {
     return switch ((codeConfig.targetOS, codeConfig.targetArchitecture)) {
       (OS.android, Architecture.arm64) => 'aarch64-linux-android',
       (OS.android, Architecture.arm) => 'armv7-linux-androideabi',
+      (OS.android, Architecture.ia32) => 'i686-linux-android',
       (OS.android, Architecture.x64) => 'x86_64-linux-android',
       (OS.iOS, Architecture.arm64)
           when codeConfig.iOS.targetSdk == IOSSdk.iPhoneSimulator =>
