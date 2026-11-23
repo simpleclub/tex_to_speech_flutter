@@ -23,9 +23,10 @@ dependencies:
       ref: "98473805b0c324dc9868e10be3dadf7fad660662"
       path: "frb_hooks"
   code_assets: ^2.2.0
-  crypto: ^3.0.6
   ed25519_edwards: ^0.3.1
   path: ^1.9.0
+  tex_to_speech_precompiled:
+    path: ../tex_to_speech_precompiled
 
 dev_dependencies:
   ffi: ^2.1.3

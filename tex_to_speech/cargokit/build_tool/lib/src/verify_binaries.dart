@@ -5,12 +5,11 @@ import 'dart:io';
 
 import 'package:ed25519_edwards/ed25519_edwards.dart';
 import 'package:http/http.dart';
+import 'package:tex_to_speech_precompiled/tex_to_speech_precompiled.dart';
 
 import 'artifacts_provider.dart';
 import 'cargo.dart';
-import 'crate_hash.dart';
 import 'precompile_binaries.dart';
-import 'release_settings.dart';
 import 'target.dart';
 
 class VerifyBinaries {

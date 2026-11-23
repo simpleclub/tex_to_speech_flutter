@@ -5,9 +5,7 @@ import 'dart:typed_data';
 import 'package:code_assets/code_assets.dart';
 import 'package:ed25519_edwards/ed25519_edwards.dart' as ed25519;
 import 'package:flutter_rust_bridge_hooks/flutter_rust_bridge_hooks.dart';
-
-import 'crate_hash.dart';
-import 'release_settings.dart';
+import 'package:tex_to_speech_precompiled/tex_to_speech_precompiled.dart';
 
 /// The Rust library downloaded from the `precompiled_<crate hash>` release
 /// that the `Precompile Binaries` workflow publishes.

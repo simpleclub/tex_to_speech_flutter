@@ -7,11 +7,11 @@ import 'package:ed25519_edwards/ed25519_edwards.dart';
 import 'package:github/github.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
+import 'package:tex_to_speech_precompiled/tex_to_speech_precompiled.dart';
 
 import 'artifacts_provider.dart';
 import 'builder.dart';
 import 'cargo.dart';
-import 'crate_hash.dart';
 import 'rustup.dart';
 import 'target.dart';
 

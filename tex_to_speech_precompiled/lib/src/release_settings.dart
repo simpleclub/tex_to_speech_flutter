@@ -1,9 +1,5 @@
 import 'package:ed25519_edwards/ed25519_edwards.dart' as ed25519;
 
-// `cargokit/build_tool/lib/src/release_settings.dart` is a symlink to this
-// file, so the precompile workflow publishes where the hook downloads from. It
-// may only import packages that `build_tool` depends on too.
-
 /// Where the `Precompile Binaries` workflow publishes the precompiled binaries,
 /// and the key that verifies their signatures.
 abstract final class ReleaseSettings {

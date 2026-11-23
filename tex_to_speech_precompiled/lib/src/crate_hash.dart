@@ -5,10 +5,6 @@ import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:path/path.dart' as path;
 
-// `cargokit/build_tool/lib/src/crate_hash.dart` is a symlink to this file, so
-// the precompile workflow names the `precompiled_<hash>` releases with the
-// same code. It may only import packages that `build_tool` depends on too.
-
 /// The hash that identifies a crate's precompiled binaries.
 abstract final class CrateHash {
   /// The files whose content makes up the hash of the crate in

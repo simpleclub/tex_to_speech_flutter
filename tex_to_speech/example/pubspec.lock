@@ -376,6 +376,13 @@ packages:
       relative: true
     source: path
     version: "0.0.7"
+  tex_to_speech_precompiled:
+    dependency: transitive
+    description:
+      path: "../../tex_to_speech_precompiled"
+      relative: true
+    source: path
+    version: "1.0.0"
   toml:
     dependency: transitive
     description:
