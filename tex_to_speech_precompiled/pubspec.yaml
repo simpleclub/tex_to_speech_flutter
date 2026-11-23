@@ -1,0 +1,15 @@
+name: tex_to_speech_precompiled
+description: >-
+  Names, locates and verifies the precompiled tex_to_speech binaries. Shared by
+  the tex_to_speech build hook and the precompile workflow's build_tool.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.0.0
+
+# Ranges wide enough for build_tool's exact pins and for apps' newer versions.
+dependencies:
+  crypto: ^3.0.3
+  ed25519_edwards: ^0.3.1
+  path: ^1.8.0

@@ -1,0 +1,3 @@
+.dart_tool/
+# Library package: apps resolve its dependencies themselves.
+pubspec.lock

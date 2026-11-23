@@ -7,12 +7,11 @@ import 'package:ed25519_edwards/ed25519_edwards.dart';
 import 'package:github/github.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
+import 'package:tex_to_speech_precompiled/tex_to_speech_precompiled.dart';
 
 import 'artifacts_provider.dart';
 import 'builder.dart';
 import 'cargo.dart';
-import 'crate_hash.dart';
-import 'options.dart';
 import 'rustup.dart';
 import 'target.dart';
 
@@ -62,7 +61,7 @@ class PrecompileBinaries {
 
     _log.info('Precompiling binaries for $targets');
 
-    final hash = CrateHash.compute(manifestDir);
+    final hash = CrateHash.compute(CrateHash.files(Directory(manifestDir)));
     _log.info('Computed crate hash: $hash');
 
     final String tagName = 'precompiled_$hash';
@@ -82,13 +81,8 @@ class PrecompileBinaries {
 
     tempDir.createSync(recursive: true);
 
-    final crateOptions = CargokitCrateOptions.load(
-      manifestDir: manifestDir,
-    );
-
     final buildEnvironment = BuildEnvironment(
       configuration: BuildConfiguration.release,
-      crateOptions: crateOptions,
       targetTempDir: tempDir.path,
       manifestDir: manifestDir,
       crateInfo: crateInfo,
@@ -105,6 +99,8 @@ class PrecompileBinaries {
         target: target,
         libraryName: crateInfo.packageName,
         remote: true,
+        // The build hook bundles dynamic libraries on every platform.
+        aritifactType: AritifactType.dylib,
       );
 
       if (artifactNames.every((name) {

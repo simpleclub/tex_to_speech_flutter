@@ -81,19 +81,6 @@ class Target {
     ),
   ];
 
-  static Target? forFlutterName(String flutterName) {
-    return all.firstWhereOrNull((element) => element.flutter == flutterName);
-  }
-
-  static Target? forDarwin({
-    required String platformName,
-    required String darwinAarch,
-  }) {
-    return all.firstWhereOrNull((element) => //
-        element.darwinPlatform == platformName &&
-        element.darwinArch == darwinAarch);
-  }
-
   static Target? forRustTriple(String triple) {
     return all.firstWhereOrNull((element) => element.rust == triple);
   }
