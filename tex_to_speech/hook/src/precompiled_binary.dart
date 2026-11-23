@@ -4,10 +4,10 @@ import 'dart:typed_data';
 
 import 'package:code_assets/code_assets.dart';
 import 'package:ed25519_edwards/ed25519_edwards.dart' as ed25519;
-import 'package:hooks/hooks.dart';
-import 'package:yaml/yaml.dart';
+import 'package:flutter_rust_bridge_hooks/flutter_rust_bridge_hooks.dart';
 
 import 'crate_hash.dart';
+import 'release_settings.dart';
 
 /// The Rust library downloaded from the `precompiled_<crate hash>` release
 /// that the `Precompile Binaries` workflow publishes.
@@ -53,9 +53,7 @@ final class PrecompiledBinary {
       ),
     );
     if (!binary.existsSync()) {
-      final settings = _ReleaseSettings.read(crateDirectory);
       await _download(
-        settings: settings,
         crateHash: crateHash,
         assetFileName: '${targetTriple}_$fileName',
         destination: binary,
@@ -73,12 +71,11 @@ final class PrecompiledBinary {
   }
 
   Future<void> _download({
-    required _ReleaseSettings settings,
     required String crateHash,
     required String assetFileName,
     required File destination,
   }) async {
-    final releaseUrl = '${settings.urlPrefix}$crateHash/';
+    final releaseUrl = '${ReleaseSettings.urlPrefix}$crateHash/';
     final binaryUrl = Uri.parse('$releaseUrl$assetFileName');
     final signature = await _get(Uri.parse('$releaseUrl$assetFileName.sig'));
     final data = await _get(binaryUrl);
@@ -90,7 +87,7 @@ final class PrecompiledBinary {
         'build from source instead.',
       );
     }
-    if (!ed25519.verify(settings.publicKey, data, signature)) {
+    if (!ed25519.verify(ReleaseSettings.publicKey, data, signature)) {
       throw StateError('Signature verification failed for $binaryUrl.');
     }
 
@@ -160,30 +157,4 @@ final class PrecompiledBinary {
       ),
     };
   }
-}
-
-/// Where the precompiled binaries are published and the key they are signed
-/// with, as configured in `rust/cargokit.yaml`.
-final class _ReleaseSettings {
-  _ReleaseSettings({required this.urlPrefix, required this.publicKey});
-
-  factory _ReleaseSettings.read(Directory crateDirectory) {
-    final yaml =
-        loadYaml(
-              File('${crateDirectory.path}/cargokit.yaml').readAsStringSync(),
-            )
-            as YamlMap;
-    final precompiled = yaml['precompiled_binaries'] as YamlMap;
-    final publicKeyHex = precompiled['public_key'] as String;
-    return _ReleaseSettings(
-      urlPrefix: precompiled['url_prefix'] as String,
-      publicKey: ed25519.PublicKey([
-        for (var i = 0; i < publicKeyHex.length; i += 2)
-          int.parse(publicKeyHex.substring(i, i + 2), radix: 16),
-      ]),
-    );
-  }
-
-  final String urlPrefix;
-  final ed25519.PublicKey publicKey;
 }

@@ -2,7 +2,6 @@
 /// Details: https://fzyzcjy.github.io/flutter_rust_bridge/manual/integrate/builtin
 
 import 'dart:io';
-import 'dart:isolate';
 import 'dart:math' as math;
 
 import 'package:collection/collection.dart';
@@ -20,24 +19,6 @@ class AndroidEnvironment {
     required this.targetTempDir,
     required this.target,
   });
-
-  static void clangLinkerWrapper(List<String> args) {
-    final clang = Platform.environment['_CARGOKIT_NDK_LINK_CLANG'];
-    if (clang == null) {
-      throw Exception(
-          "cargo-ndk rustc linker: didn't find _CARGOKIT_NDK_LINK_CLANG env var");
-    }
-    final target = Platform.environment['_CARGOKIT_NDK_LINK_TARGET'];
-    if (target == null) {
-      throw Exception(
-          "cargo-ndk rustc linker: didn't find _CARGOKIT_NDK_LINK_TARGET env var");
-    }
-
-    runCommand(clang, [
-      target,
-      ...args,
-    ]);
-  }
 
   /// Full path to Android SDK.
   final String sdkPath;
@@ -131,24 +112,16 @@ class AndroidEnvironment {
     final rustFlagsKey = 'CARGO_ENCODED_RUSTFLAGS';
     final rustFlagsValue = _libGccWorkaround(targetTempDir, ndkVersionParsed);
 
-    final runRustTool =
-        Platform.isWindows ? 'run_build_tool.cmd' : 'run_build_tool.sh';
-
-    final packagePath = (await Isolate.resolvePackageUri(
-            Uri.parse('package:build_tool/buildtool.dart')))!
-        .toFilePath();
-    final selfPath = path.canonicalize(path.join(
-      packagePath,
-      '..',
-      '..',
-      '..',
-      runRustTool,
-    ));
-
-    // Make sure that run_build_tool is working properly even initially launched directly
-    // through dart run.
-    final toolTempDir =
-        Platform.environment['CARGOKIT_TOOL_TEMP_DIR'] ?? targetTempDir;
+    // Cargo calls the linker without `--target`, so use the NDK script for
+    // this target and API level, which adds it before running clang.
+    final clangTarget = target.rust.replaceFirst('armv7-', 'armv7a-');
+    final linkerValue = path.join(
+      toolchainPath,
+      '$clangTarget$minSdkVersion-clang${Platform.isWindows ? '.cmd' : ''}',
+    );
+    if (!File(linkerValue).existsSync()) {
+      throw Exception('Failed to find linker for $target at $linkerValue');
+    }
 
     return {
       arKey: arValue,
@@ -158,11 +131,7 @@ class AndroidEnvironment {
       cxxFlagsKey: cxxFlagsValue,
       ranlibKey: ranlibValue,
       rustFlagsKey: rustFlagsValue,
-      linkerKey: selfPath,
-      // Recognized by main() so we know when we're acting as a wrapper
-      '_CARGOKIT_NDK_LINK_TARGET': targetArg,
-      '_CARGOKIT_NDK_LINK_CLANG': ccValue,
-      'CARGOKIT_TOOL_TEMP_DIR': toolTempDir,
+      linkerKey: linkerValue,
     };
   }
 

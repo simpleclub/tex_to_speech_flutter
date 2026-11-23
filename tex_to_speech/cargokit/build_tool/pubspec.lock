@@ -58,7 +58,7 @@ packages:
     source: hosted
     version: "1.18.0"
   convert:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: convert
       sha256: "0f08b14755d163f6e2134cb58222dd25ea2a2ee8a195e53983d57c075324d592"
@@ -322,7 +322,7 @@ packages:
     source: hosted
     version: "0.10.12"
   source_span:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: source_span
       sha256: "53e943d4206a5e30df338fd4c6e7a077e02254531b138a15aec3bd143c1a8b3c"
@@ -442,7 +442,7 @@ packages:
     source: hosted
     version: "1.2.0"
   yaml:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: yaml
       sha256: "75769501ea3489fca56601ff33454fe45507ea3bfb014161abc3b43ae25989d5"

@@ -1,0 +1,1 @@
+../../../../hook/src/release_settings.dart

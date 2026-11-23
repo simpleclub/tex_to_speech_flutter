@@ -1,19 +1,13 @@
 /// This is copied from Cargokit (which is the official way to use it currently)
 /// Details: https://fzyzcjy.github.io/flutter_rust_bridge/manual/integrate/builtin
 
-import 'package:collection/collection.dart';
-import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 
 import 'android_environment.dart';
 import 'cargo.dart';
-import 'environment.dart';
-import 'options.dart';
 import 'rustup.dart';
 import 'target.dart';
 import 'util.dart';
-
-final _log = Logger('builder');
 
 enum BuildConfiguration {
   debug,
@@ -43,7 +37,6 @@ class BuildException implements Exception {
 
 class BuildEnvironment {
   final BuildConfiguration configuration;
-  final CargokitCrateOptions crateOptions;
   final String targetTempDir;
   final String manifestDir;
   final CrateInfo crateInfo;
@@ -56,7 +49,6 @@ class BuildEnvironment {
 
   BuildEnvironment({
     required this.configuration,
-    required this.crateOptions,
     required this.targetTempDir,
     required this.manifestDir,
     required this.crateInfo,
@@ -66,44 +58,6 @@ class BuildEnvironment {
     this.androidMinSdkVersion,
     this.javaHome,
   });
-
-  static BuildConfiguration parseBuildConfiguration(String value) {
-    // XCode configuration adds the flavor to configuration name.
-    final firstSegment = value.split('-').first;
-    final buildConfiguration = BuildConfiguration.values.firstWhereOrNull(
-      (e) => e.name == firstSegment,
-    );
-    if (buildConfiguration == null) {
-      _log.warning('Unknown build configuraiton $value, will assume release');
-      return BuildConfiguration.release;
-    }
-    return buildConfiguration;
-  }
-
-  static BuildEnvironment fromEnvironment({
-    required bool isAndroid,
-  }) {
-    final buildConfiguration =
-        parseBuildConfiguration(Environment.configuration);
-    final manifestDir = Environment.manifestDir;
-    final crateOptions = CargokitCrateOptions.load(
-      manifestDir: manifestDir,
-    );
-    final crateInfo = CrateInfo.load(manifestDir);
-    return BuildEnvironment(
-      configuration: buildConfiguration,
-      crateOptions: crateOptions,
-      targetTempDir: Environment.targetTempDir,
-      manifestDir: manifestDir,
-      crateInfo: crateInfo,
-      isAndroid: isAndroid,
-      androidSdkPath: isAndroid ? Environment.sdkPath : null,
-      androidNdkVersion: isAndroid ? Environment.ndkVersion : null,
-      androidMinSdkVersion:
-          isAndroid ? int.parse(Environment.minSdkVersion) : null,
-      javaHome: isAndroid ? Environment.javaHome : null,
-    );
-  }
 }
 
 class RustBuilder {
@@ -130,14 +84,10 @@ class RustBuilder {
     }
   }
 
-  CargoBuildOptions? get _buildOptions =>
-      environment.crateOptions.cargo[environment.configuration];
-
-  String get _toolchain => _buildOptions?.toolchain.name ?? 'stable';
+  String get _toolchain => environment.crateInfo.toolchain;
 
   /// Returns the path of directory containing build artifacts.
   Future<String> build() async {
-    final extraArgs = _buildOptions?.flags ?? [];
     final manifestPath = path.join(environment.manifestDir, 'Cargo.toml');
     runCommand(
       'rustup',
@@ -146,7 +96,6 @@ class RustBuilder {
         _toolchain,
         'cargo',
         'build',
-        ...extraArgs,
         '--manifest-path',
         manifestPath,
         '-p',

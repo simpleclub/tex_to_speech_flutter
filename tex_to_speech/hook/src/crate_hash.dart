@@ -3,28 +3,25 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
+import 'package:path/path.dart' as path;
+
+// `cargokit/build_tool/lib/src/crate_hash.dart` is a symlink to this file, so
+// the precompile workflow names the `precompiled_<hash>` releases with the
+// same code. It may only import packages that `build_tool` depends on too.
 
 /// The hash that identifies a crate's precompiled binaries.
-///
-/// Must stay identical to `CrateHash` in `cargokit/build_tool`, which names
-/// the `precompiled_<hash>` releases this hash is used to look up.
 abstract final class CrateHash {
   /// The files whose content makes up the hash of the crate in
   /// [crateDirectory], in hashing order.
   static List<File> files(Directory crateDirectory) {
     final files =
-        Directory('${crateDirectory.path}/src')
+        Directory(path.join(crateDirectory.path, 'src'))
             .listSync(recursive: true, followLinks: false)
             .whereType<File>()
             .toList()
           ..sort((a, b) => a.path.compareTo(b.path));
-    for (final name in [
-      'Cargo.toml',
-      'Cargo.lock',
-      'build.rs',
-      'cargokit.yaml',
-    ]) {
-      final file = File('${crateDirectory.path}/$name');
+    for (final name in ['Cargo.toml', 'Cargo.lock', 'build.rs']) {
+      final file = File(path.join(crateDirectory.path, name));
       if (file.existsSync()) {
         files.add(file);
       }

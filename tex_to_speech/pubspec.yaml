@@ -25,8 +25,7 @@ dependencies:
   code_assets: ^2.2.0
   crypto: ^3.0.6
   ed25519_edwards: ^0.3.1
-  hooks: ^2.2.0
-  yaml: ^3.1.2
+  path: ^1.9.0
 
 dev_dependencies:
   ffi: ^2.1.3

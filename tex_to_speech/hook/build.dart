@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:code_assets/code_assets.dart';
 import 'package:flutter_rust_bridge_hooks/flutter_rust_bridge_hooks.dart';
+import 'package:path/path.dart' as path;
 
 import 'src/precompiled_binary.dart';
 
@@ -47,11 +48,9 @@ bool _isRustupInstalled() {
   final home = environment[Platform.isWindows ? 'USERPROFILE' : 'HOME'];
   final directories = [
     ...?environment['PATH']?.split(Platform.isWindows ? ';' : ':'),
-    if (home != null)
-      '$home${Platform.pathSeparator}.cargo${Platform.pathSeparator}bin',
+    if (home != null) path.join(home, '.cargo', 'bin'),
   ];
   return directories.any(
-    (directory) =>
-        File('$directory${Platform.pathSeparator}$executable').existsSync(),
+    (directory) => File(path.join(directory, executable)).existsSync(),
   );
 }
